@@ -519,6 +519,19 @@ img{max-width:100%;display:block}
   gsap.registerPlugin(ScrollTrigger);
   if(hasSplit) gsap.registerPlugin(SplitText);
 
+  // On attend que les polices soient chargées AVANT de mesurer/découper les titres,
+  // sinon SplitText calcule la largeur avec la police de secours et coupe le texte.
+  var started = false;
+  function start(){ if(started) return; started = true; init(); }
+  if(document.fonts && document.fonts.ready){
+    document.fonts.ready.then(start);
+    setTimeout(start, 2500); // sécurité si les polices tardent
+  } else {
+    start();
+  }
+
+  function init(){
+
   /* ============ LENIS SMOOTH SCROLL ============ */
   var lenis = null;
   if(hasLenis && !reduced){
@@ -764,6 +777,7 @@ img{max-width:100%;display:block}
   });
 
   window.addEventListener("load", function(){ ScrollTrigger.refresh(); });
+  }
 })();
 </script>
 </body>
