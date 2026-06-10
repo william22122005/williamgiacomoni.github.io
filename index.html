@@ -532,6 +532,29 @@ img{max-width:100%;display:block}
 
   function init(){
 
+  /* ============ AJUSTEMENT AUTO DES TITRES ============ */
+  // Certains mots (ex. "PROFESSIONNEL") sont plus larges que l'écran avec cette
+  // police très étendue : un mot seul ne passe pas à la ligne, il se fait rogner.
+  // On réduit donc la taille du titre juste assez pour qu'il tienne, à toutes les tailles d'écran.
+  function fitTitles(){
+    document.querySelectorAll(".sec-title, .contact-title, .hero-name").forEach(function(t){
+      t.style.fontSize = "";
+      var max = t.parentElement.clientWidth;
+      if(!max) return;
+      var fs = parseFloat(getComputedStyle(t).fontSize), guard = 80;
+      while(t.scrollWidth > max && fs > 18 && guard--){
+        fs -= 1;
+        t.style.fontSize = fs + "px";
+      }
+    });
+  }
+  fitTitles();
+  var fitTimer;
+  window.addEventListener("resize", function(){
+    clearTimeout(fitTimer);
+    fitTimer = setTimeout(function(){ fitTitles(); ScrollTrigger.refresh(); }, 150);
+  });
+
   /* ============ LENIS SMOOTH SCROLL ============ */
   var lenis = null;
   if(hasLenis && !reduced){
