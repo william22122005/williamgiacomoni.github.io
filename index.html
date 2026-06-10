@@ -655,18 +655,11 @@ img{max-width:100%;display:block}
   }
 
   /* ============ TITRES DE SECTION ============ */
+  // Pas de SplitText avec masque ici : les conteneurs "overflow:hidden"
+  // coupaient les lettres larges et les accents. Animation directe = zéro découpe.
   document.querySelectorAll(".sec-title, .contact-title").forEach(function(t){
-    var targets;
-    if(hasSplit && !reduced){
-      var sp = new SplitText(t, {type:"lines", mask:"lines"});
-      targets = sp.lines;
-      gsap.set(targets, {yPercent:115});
-      gsap.to(targets, {
-        yPercent:0, duration:1.2, stagger:0.12, ease:"power4.out",
-        scrollTrigger:{trigger:t, start:"top 85%"}
-      });
-    } else if(!reduced){
-      gsap.from(t, {autoAlpha:0, y:50, duration:1,
+    if(!reduced){
+      gsap.from(t, {autoAlpha:0, y:70, duration:1.2, ease:"power4.out",
         scrollTrigger:{trigger:t, start:"top 85%"}});
     }
   });
